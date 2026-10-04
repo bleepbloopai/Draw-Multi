@@ -111,7 +111,11 @@ function doFill(sx,sy,hex){
 }
 
 /* ---------- network (WebSocket to the Worker's Durable Object) ---------- */
-const WSURL=(location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws';
+const WORKER_HOST = location.host.includes('github.io') 
+  ? 'draw-multi.bleepbloop-ai.workers.dev' 
+  : location.host;
+const WSURL = (location.protocol === 'https:' ? 'wss://' : 'ws://') + WORKER_HOST + '/ws';
+
 let ws=null,tries=0;const others=new Map();
 const send=(t,d)=>{if(ws&&ws.readyState===1)ws.send(JSON.stringify(Object.assign({t},d)))};
 const num=(v,a,b)=>Number.isFinite(v)?Math.min(b,Math.max(a,v)):a;
